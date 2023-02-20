@@ -1,11 +1,13 @@
-import { Grid, Container } from '@mui/material';
-import React from 'react';
+import { Grid, Container, Stack } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 import { AddressForm, ContactDetailsForm, OrganizationDetailsForm } from './forms';
 
 export const OrganizationDetails: React.FC = () => {
+  const { register } = useFormContext();
+
   return (
-    <Container sx={{ p: 3, m: 2 }}>
-      <Grid container spacing={2}>
+    <Stack sx={{ p: 3 }}>
+      <Grid container spacing={2} justifyContent='center'>
         <Grid item xs={12} sm={12} md={4}>
           <OrganizationDetailsForm />
         </Grid>
@@ -16,6 +18,6 @@ export const OrganizationDetails: React.FC = () => {
           <AddressForm />
         </Grid>
       </Grid>
-    </Container>
+    </Stack>
   );
 };
