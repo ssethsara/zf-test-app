@@ -19,8 +19,8 @@ export const orgDetailsValidationSchema = yup.object().shape({
   }),
   address: yup.object({
     streetName: yup.string().max(16).required().label('Street name'),
-    streetNumber: yup.number().required().label('Street number'),
-    postalCode: yup.number().required().label('Postal code'),
+    streetNumber: yup.number().required().label('Street number').typeError('Should be a number'),
+    postalCode: yup.number().required().label('Postal code').typeError('Should be a number'),
     city: yup.string().max(16).required().label('City'),
     country: yup.string().max(16).required().label('Country'),
   }),

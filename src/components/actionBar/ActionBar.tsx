@@ -1,5 +1,5 @@
 import { Stack, Paper, Grid, Alert, Button } from '@mui/material';
-import { useFormikContext } from 'formik';
+import { useFormContext } from 'react-hook-form';
 import React, { useCallback } from 'react';
 import { OrganizationDetailsType } from '../../types/organizationDetailsTypes';
 
@@ -8,18 +8,21 @@ interface ActionBarProp {
 }
 
 export const ActionBar: React.FC<ActionBarProp> = (props: ActionBarProp) => {
-  const { isValid, errors, dirty } = useFormikContext<OrganizationDetailsType>();
+  const {
+    formState: { isValid, errors, isDirty, isSubmitSuccessful },
+    reset,
+  } = useFormContext<OrganizationDetailsType>();
 
   const alartMessage = useCallback(() => {
-    if (dirty && !isValid) {
+    if (isDirty && !isValid) {
       return <Alert severity='error'>Please complete the form</Alert>;
     }
-    if (props.submitted) {
+    if (isSubmitSuccessful) {
       return <Alert severity='success'>Form is submitted</Alert>;
     } else {
       return <Alert severity='info'>Please fill the form and save it</Alert>;
     }
-  }, [dirty, errors, isValid, props]);
+  }, [isDirty, isValid, props]);
 
   return (
     <Paper sx={{ p: 3, m: 3 }} elevation={3}>
@@ -29,8 +32,8 @@ export const ActionBar: React.FC<ActionBarProp> = (props: ActionBarProp) => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Stack direction={'row'} justifyContent={'flex-end'}>
-            {dirty && (
-              <Button variant='text' type='reset'>
+            {isDirty && (
+              <Button variant='text' onClick={() => reset()}>
                 Cancel
               </Button>
             )}
@@ -39,7 +42,7 @@ export const ActionBar: React.FC<ActionBarProp> = (props: ActionBarProp) => {
               variant='contained'
               color='primary'
               size='large'
-              disabled={!isValid || !dirty}
+              disabled={!isValid || !isDirty}
             >
               Save
             </Button>

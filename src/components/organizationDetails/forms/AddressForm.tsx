@@ -1,98 +1,134 @@
-import { Paper, Stack, TextField } from '@mui/material';
-import { FastField, useFormikContext } from 'formik';
-import React, { useMemo } from 'react';
+import { Paper, Stack, TextField, Typography } from '@mui/material';
+import { memo } from 'react';
+import { Controller, useFormContext, UseFormReturn } from 'react-hook-form';
 import { OrganizationDetailsType } from '../../../types/organizationDetailsTypes';
 
-export const AddressForm: React.FC = () => {
-  const { errors, touched } = useFormikContext<OrganizationDetailsType>();
-
-  const memoizedValues = useMemo(() => {
-    return { errors, touched };
-  }, [errors, touched]);
-
-  return (
+// React.memo to prevent re-render except isDirty state changed
+const NestedInput = memo(
+  ({ register, control, formState }: UseFormReturn<OrganizationDetailsType, any>) => (
     <>
-      {console.count()}
       <Paper sx={{ p: 2, height: '70vh' }} elevation={3} className='AddressForm'>
         <Stack spacing={2} justifyContent='flex-end'>
-          <FastField
-            label='Street name'
+          <Controller
+            control={control}
             name='address.streetName'
-            as={TextField}
-            placeholder='Jack Lane'
-            size='small'
-            variant='outlined'
-            error={
-              !!memoizedValues.errors.address?.streetName &&
-              !!memoizedValues.touched.address?.streetName
-            }
-            helperText={
-              !!memoizedValues.touched.address?.streetName &&
-              memoizedValues.errors.address?.streetName
-            }
+            defaultValue=''
+            render={({ field }) => (
+              <TextField
+                {...field}
+                size='small'
+                variant='outlined'
+                label='Street name'
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+                ref={field.ref}
+                error={!!formState.errors?.address?.streetName}
+                helperText={
+                  formState.errors?.address?.streetName &&
+                  formState.errors.address?.streetName.message
+                }
+              />
+            )}
           />
-          <FastField
-            label='Street No'
+          <Controller
+            control={control}
             name='address.streetNumber'
-            as={TextField}
-            placeholder='123'
-            type='number'
-            size='small'
-            variant='outlined'
-            error={
-              !!memoizedValues.errors.address?.streetNumber &&
-              !!memoizedValues.touched.address?.streetNumber
-            }
-            helperText={
-              !!memoizedValues.touched.address?.streetNumber &&
-              memoizedValues.errors.address?.streetNumber
-            }
+            defaultValue=''
+            render={({ field }) => (
+              <TextField
+                {...field}
+                size='small'
+                variant='outlined'
+                label='Street Number'
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+                ref={field.ref}
+                error={!!formState.errors?.address?.streetNumber}
+                helperText={
+                  formState.errors?.address?.streetNumber &&
+                  formState.errors.address?.streetNumber.message
+                }
+              />
+            )}
           />
-          <FastField
-            label='Postal Code'
+          <Controller
+            control={control}
             name='address.postalCode'
-            as={TextField}
-            placeholder='12334'
-            type='number'
-            size='small'
-            variant='outlined'
-            error={
-              !!memoizedValues.errors.address?.postalCode &&
-              !!memoizedValues.touched.address?.postalCode
-            }
-            helperText={
-              !!memoizedValues.touched.address?.postalCode &&
-              memoizedValues.errors.address?.postalCode
-            }
+            defaultValue=''
+            render={({ field }) => (
+              <TextField
+                {...field}
+                size='small'
+                variant='outlined'
+                label='Postal code'
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+                ref={field.ref}
+                error={!!formState.errors?.address?.postalCode}
+                helperText={
+                  formState.errors?.address?.postalCode &&
+                  formState.errors.address?.postalCode.message
+                }
+              />
+            )}
           />
-          <FastField
-            label='City'
+          <Controller
+            control={control}
             name='address.city'
-            as={TextField}
-            placeholder='City'
-            size='small'
-            variant='outlined'
-            error={!!memoizedValues.errors.address?.city && !!memoizedValues.touched.address?.city}
-            helperText={
-              !!memoizedValues.touched.address?.city && memoizedValues.errors.address?.city
-            }
+            defaultValue=''
+            render={({ field }) => (
+              <TextField
+                {...field}
+                size='small'
+                variant='outlined'
+                label='City'
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+                ref={field.ref}
+                error={!!formState.errors?.address?.city}
+                helperText={
+                  formState.errors?.address?.city && formState.errors.address?.city.message
+                }
+              />
+            )}
           />
-          <FastField
-            label='Country'
+
+          <Controller
+            control={control}
             name='address.country'
-            as={TextField}
-            placeholder='country'
-            size='small'
-            variant='outlined'
-            error={
-              !!memoizedValues.errors.address?.country && !!memoizedValues.touched.address?.country
-            }
-            helperText={
-              !!memoizedValues.touched.address?.country && memoizedValues.errors.address?.country
-            }
+            defaultValue=''
+            render={({ field }) => (
+              <TextField
+                {...field}
+                size='small'
+                variant='outlined'
+                label='Country'
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+                ref={field.ref}
+                error={!!formState.errors?.address?.country}
+                helperText={
+                  formState.errors?.address?.country && formState.errors.address?.country.message
+                }
+              />
+            )}
           />
         </Stack>
       </Paper>
     </>
-  );
+  ),
+  (prevProps, nextProps) => prevProps.formState.isDirty === nextProps.formState.isDirty,
+);
+
+NestedInput.displayName = 'NestedInput';
+
+export const AddressForm: React.FC = () => {
+  const methods = useFormContext<OrganizationDetailsType>();
+
+  return <NestedInput {...methods} />;
 };
