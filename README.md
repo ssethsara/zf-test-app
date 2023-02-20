@@ -1,3 +1,21 @@
+# Developer Note
+For this test i have used two Form libraries.
+### 1. FormIK 
+- Work well with forms but there is no method to avoid child component re-rendering on change. With the large data there could be a performance issues
+#### Check branch name : completed/with-formik.
+
+### 2. React hook Form 
+- Work well with forms most of the re rendering issues canbe solved with in build functions. Rest of the issues can be fixed with react optimization methods. Performance wise this is a good form library.
+#### Check branch name : master,develop
+
+ --
+____________________________________
+ --
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
